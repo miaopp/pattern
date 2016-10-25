@@ -1,7 +1,9 @@
 package com.miaopp.pattern.strategy;
 
 import com.miaopp.pattern.strategy.constant.BookTypeEnum;
-import com.miaopp.pattern.strategy.impl.ConcreateStrategy;
+import com.miaopp.pattern.strategy.impl.FlatRateStrategy;
+import com.miaopp.pattern.strategy.impl.NoDiscountStrategy;
+import com.miaopp.pattern.strategy.impl.PercentageStrategy;
 
 import java.math.BigDecimal;
 
@@ -11,20 +13,35 @@ import java.math.BigDecimal;
  */
 public class Context {
 
-    private Strategy strategy;
+    private DiscountStrategy discountStrategy;
 
     public Context() {
-        this.strategy = new ConcreateStrategy(BookTypeEnum.OTHER);
+        discountStrategy = new NoDiscountStrategy(new BigDecimal(0), 0);
     }
 
-    public Context(BookTypeEnum typeEnum) {
-        this.strategy = new ConcreateStrategy(typeEnum);
+    public Context(BigDecimal price, int number, Float percent, BigDecimal discountPrice, BookTypeEnum typeEnum) {
+        switch (typeEnum) {
+            case TESTBOOK:
+                discountStrategy = new FlatRateStrategy(price, number, discountPrice);
+                break;
+            case CARTOON:
+                discountStrategy = new PercentageStrategy(price, number, percent);
+                break;
+            case COMPUTERSCIENCE:
+                discountStrategy = new PercentageStrategy(price, number, percent);
+                break;
+            case OTHER:
+                discountStrategy = new NoDiscountStrategy(price, number);
+                break;
+            default:
+                discountStrategy = new NoDiscountStrategy(price, number);
+        }
     }
 
     /**
      * 策略方法
      */
-    public BigDecimal calculatePerPrice(BigDecimal perPrice) {
-        return strategy.calculateBookPerPrice(perPrice);
+    public BigDecimal calculateDiscount() {
+        return discountStrategy.calculateDiscount();
     }
 }

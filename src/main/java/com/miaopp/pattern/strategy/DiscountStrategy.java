@@ -7,8 +7,8 @@ import java.math.BigDecimal;
 /**
  * Created by miaoping on 16/10/25.
  */
-public abstract class Strategy {
+public interface DiscountStrategy {
 
-    public abstract BigDecimal calculateBookPerPrice(BigDecimal perPrice);
+    public BigDecimal calculateDiscount();
 
 }
