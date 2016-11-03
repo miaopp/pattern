@@ -12,6 +12,7 @@ public class DataBaseClient {
     public static void main(String[] args) throws Exception {
         queryRunner = new OracleQueryRunner();
         ResultSet resultSet = queryRunner.run();
+        //操作resultSet，这里的resultSet就是具体的产品
     }
 
 }
